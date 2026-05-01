@@ -43,7 +43,7 @@ BANNER = f"""
 {C.W}  ╚██████╗███████╗██║  ██║██║ ╚████║    {C.R}██║ ╚████║██╔╝ ██╗   ██║   {C.RESET}
 {C.W}   ╚═════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝    {C.R}╚═╝  ╚═══╝╚═╝  ╚═╝   ╚═╝   {C.RESET}
 {C.GRAY}  ──────────────────────────────────────────────────────────{C.RESET}
-{C.DIM}   C2 Infrastructure Manager v3.0  │  #𝐂𝐋𝐀𝐍 {C.R}𝐍𝐗𝐓{C.RESET}{C.DIM} ~{C.RESET}
+{C.DIM}   C2 Infrastructure Manager v3.0  │  Red Team Operations Framework{C.RESET}
 {C.GRAY}  ──────────────────────────────────────────────────────────{C.RESET}
 """
 
@@ -209,7 +209,7 @@ def main():
 
     while True:
         try:
-            prompt = f"  {C.W}#𝐂𝐋𝐀𝐍 {C.R}𝐍𝐗𝐓{C.RESET} {C.GRAY}~{C.RESET} "
+            prompt = f"  {C.W}#𝐂𝐋𝐀𝐍 {C.R}𝐍𝐗𝐓{C.RESET} {C.GRAY}${C.RESET} "
             cmd = input(prompt).strip().lower()
             if cmd in ['exit', 'quit', 'q']:
                 log('sys', 'Shutting down...')
