@@ -131,16 +131,21 @@ def cmd_provision():
     log('info', f'Provisioning {C.CYAN}{node["name"]}{C.RESET} via {provider}...')
 
     if 'docker' in provider.lower():
-        devnull = '> nul 2>&1' if sys.platform == 'win32' else '> /dev/null 2>&1'
         log('sys', 'Running terraform init...')
-        os.system(f'"{TF_BIN}" -chdir="{TF_DOCKER}" init -input=false {devnull}')
+        subprocess.run([TF_BIN, '-chdir=' + TF_DOCKER, 'init', '-input=false'],
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         log('sys', 'Running terraform apply...')
-        rc = os.system(f'"{TF_BIN}" -chdir="{TF_DOCKER}" apply -var "node_name={node_id[:8]}" -var "role_tag={role.replace(" ", "-")}" -auto-approve {devnull}')
+        role_tag = role.replace(' ', '-')
+        result = subprocess.run([TF_BIN, '-chdir=' + TF_DOCKER, 'apply',
+                                 '-var', f'node_name={node_id[:8]}',
+                                 '-var', f'role_tag={role_tag}',
+                                 '-auto-approve'],
+                                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
         nodes = load_nodes()
         for n in nodes:
             if n['id'] == node_id:
-                if rc == 0:
+                if result.returncode == 0:
                     n['status'] = 'online'
                     n['ip'] = '127.0.0.1'
                     log('ok', f'{C.G}Node {node["name"]} is ONLINE{C.RESET} at 127.0.0.1')
@@ -164,8 +169,9 @@ def cmd_teardown():
 
     log('warn', 'Initiating burn protocol...')
     try:
-        devnull = '> nul 2>&1' if sys.platform == 'win32' else '> /dev/null 2>&1'
-        os.system(f'"{TF_BIN}" -chdir="{TF_DOCKER}" destroy -var "node_name=x" -var "role_tag=x" -auto-approve {devnull}')
+        subprocess.run([TF_BIN, '-chdir=' + TF_DOCKER, 'destroy',
+                        '-var', 'node_name=x', '-var', 'role_tag=x', '-auto-approve'],
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except:
         pass
     save_nodes([])
