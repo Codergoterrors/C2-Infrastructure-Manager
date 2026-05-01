@@ -22,3 +22,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+  
+# Backend  
+backend/venv/  
+backend/bin/  
+backend/nodes.json  
+backend/terraform/docker/.terraform/  
+backend/terraform/docker/.terraform.lock.hcl  
+backend/terraform/docker/terraform.tfstate*  
+backend/__pycache__/ 
+backend/terraform/digitalocean/.terraform/  
+backend/terraform/digitalocean/terraform.tfstate*  
